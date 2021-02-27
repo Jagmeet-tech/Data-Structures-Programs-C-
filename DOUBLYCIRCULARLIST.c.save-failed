@@ -1,0 +1,226 @@
+struct node
+{
+    int item;
+    struct node *prev,*next;
+};
+
+void viewAll(struct node *s)
+{
+    struct node *t;
+    if(s==NULL)
+        printf("NO ITEMS ");
+    else{
+            t=s;
+        while(t->next!=s)
+        {
+           printf("%d  ",t->item);
+            t=t->next;
+        }
+}
+
+struct node * search(struct node *s,int data)
+{
+    struct node *t;
+    if(s==NULL)
+        printf("NO ITEMS THERE TO SEARCH");
+    else{
+            t=s;
+        while(t->next!=s)
+        {
+            if(t->item==data)
+                return t;
+            t=t->next;
+        }
+        return NULL:
+
+}
+
+void deleteAfter(struct node **s,struct node *t)
+{   if(t->next==t)
+          *s=NULL;
+     else{
+            if(t==(*s))
+            {
+                ((*s)->next)->prev=(*s)->prev;
+                 ((*s)->prev)->next=(*s)->next;
+                  t=*s;
+                 (*s)=(*s)->next;
+            }
+    else{
+            (t->prev)->next=t->next;
+             (t->next)->prev=t->prev;
+            }
+     }
+    free(t);
+}
+
+void deleteFirst(struct node **s)
+{
+    struct node *t;
+    if(*s==NULL)
+        printf("NO ELEMENTS TO DELETE");
+     else{
+               t=(*s)->prev;
+           if(t==*s)
+         {
+             *s=NULL;
+             free(t);
+         }
+         ((*s)->next)->prev=(*s)->prev;
+         ((*s)->prev)->next=(*s)->next;
+         t=*s;
+         *s=(*s)->next;
+         free(t);
+     }
+}
+
+void deleteLast(struct node **s)
+{
+    struct node *t;
+    if(*s==NULL)
+        printf("NO ELEMENTS TO DELETE");
+    else{
+            t=(*s)->prev;
+           if(t==*s)
+         {
+             *s=NULL;
+             free(t);
+         }
+        else
+        {
+            (t->prev)->next=t->next;
+            (*s)->prev=t->prev;
+             free(t);
+        }
+    }
+}
+
+void insertAfter(struct node **s,struct node *t,int data)
+{
+    struct node *temp;
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->item=data;
+    if(t==NULL)
+    {
+        temp->next=temp;
+        temp->prev=temp;
+        *s=temp;
+    }
+    else{
+    temp->next=t->next;
+    temp->prev=t;
+    t->next=temp;
+     }
+}
+
+void insertFirst(struct node **s,int data)
+{
+    struct node *temp,*t;
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->item=data;
+    if(*s==NULL)
+        {
+            temp->prev=temp;
+            temp->next=temp;
+            *s=temp;
+        }
+    else{
+            temp->next=(*s);
+            temp->prev=(*s)->prev;
+            *s=temp;
+            t=*s;
+            while(t->next!=(*s))
+                t=t->next;
+            t->next=temp;
+        }
+}
+
+void insertLast(struct node **s,int data)
+{
+    struct node *temp,*t;
+    temp=(struct node *)malloc(sizeof(struct node));
+    temp->item=data;
+    if(*s==NULL)
+        {
+            temp->prev=temp;
+            temp->next=temp;
+            *s=temp;
+        }
+    else{
+            t=*s;
+        while(t->next!=(*s))
+          t=t->next;
+        temp->next=t->next;
+        temp->prev=t;
+        t->next=temp;
+        *s->prev=temp;
+    }
+
+
+int menu()
+{   int choice;
+    printf("\n1.Insert value at last");
+    printf("\n2. Insert value at first");
+    printf("\n3. Insert value after a node");
+    printf("\n4. Delete Value at last");
+    printf("\n5. Delete value at first");
+    printf("\n6. Delete value after a node");
+    printf("\n7. View all elements");
+    printf("\n8. Exit");
+    printf("\n \n Enter Your Choice:  ");
+    scanf("%d",&choice);
+    return choice;
+}
+
+main()
+{   int  data,data1;
+    struct node *start=NULL;
+    struct node *t;
+    while(1)
+    {
+        switch(menu())
+        {
+            case 1: printf("enter  data to insert at last");
+                           scanf("%d",&data);
+                            insertLast(&start,data);
+                           break;
+             case 2: printf("enter  data to insert at first");
+                           scanf("%d",&data);
+                            insertFirst(&start,data);
+                           break;
+             case 3:    printf("enter  data  after which you want to insert a node");
+                           scanf("%d",&data);
+                            t=search(start,data);
+                            if(t!=NULL)
+                              {
+                                  printf("enter  value to insert in node");
+                           scanf("%d",&data1);
+                            insertAfter(&start,t,data1);
+                              }
+                              break;
+            case 4:   deleteLast(&start);
+                           break;
+            case 5:    deleteFirst(&start);
+                           break;
+            case 6:    printf("enter  data  after which you want to delete a node");
+                           scanf("%d",&data);
+                            t=search(start,data);
+                            deleteAfter(&start,t);
+                           break;
+            case 7: viewAll(start);
+                            break;
+            case 8:  printf("THANK YOU ,PRESS ANY KET TO EXIT......");
+                            getch();
+                            exit(0);
+             default:  printf("Invalid choice");
+
+        }
+        getch();
+        system("cls");
+    }
+}
+
+
+
+
+}
